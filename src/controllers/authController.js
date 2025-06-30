@@ -5,13 +5,18 @@ import jwt from 'jsonwebtoken';
 export const signup = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const existing = await User.findOne({ username });
-    if (existing) return res.status(400).json({ message: 'User exists' });
+    // Sequelize: use where clause
+    const existing = await User.findOne({ where: { username } });
+    if (existing) return res.status(400).json({ message: 'User already exists.' });
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashed });
-    await user.save();
+    // Sequelize: use create
+    await User.create({ username, password: hashed });
     res.status(201).json({ message: 'Signup successful' });
   } catch (err) {
+    // Handle unique constraint error just in case
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'User already exists.' });
+    }
     res.status(500).json({ message: err.message });
   }
 };
