@@ -26,5 +26,3 @@ sequelize.sync().then(() => {
 // export default function handler (req, res) {
 //   app(req, res);
 // }
-
-module.exports = app; // For Vercel compatibility
