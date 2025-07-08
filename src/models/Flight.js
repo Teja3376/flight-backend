@@ -1,11 +1,9 @@
-import { DataTypes } from 'sequelize';
-import sequelize from './index.js';
-
-const Flight = sequelize.define('Flight', {
-  startTime: { type: DataTypes.DATE, allowNull: false },
-  duration: { type: DataTypes.INTEGER, allowNull: false },
-  pilotName: { type: DataTypes.STRING, allowNull: false },
-  location: { type: DataTypes.STRING, allowNull: false }
+import mongoose from 'mongoose';
+const flightSchema = new mongoose.Schema({
+  startTime: { type: Date, required: true },
+  duration: { type: Number, required: true },
+  pilotName: { type: String, required: true },
+  location: { type: String, required: true }
 });
-
+const Flight = mongoose.model('Flight', flightSchema);
 export default Flight;

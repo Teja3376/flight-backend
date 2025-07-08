@@ -1,22 +1,18 @@
-import Flight from '../models/Flight.js';
-import { Op } from 'sequelize';
+import Flight from "../models/Flight.js";
 
 export const getFlights = async (req, res) => {
   try {
     const { search, pilot, location } = req.query;
-    let where = {};
+    const filter = {};
     if (search) {
-      where[Op.or] = [
-        { pilotName: { [Op.like]: `%${search}%` } },
-        { location: { [Op.like]: `%${search}%` } }
+      filter.$or = [
+        { pilotName: { $reger: search, $options: "i" } },
+        { location: { $reger: search, $option: "i" } },
       ];
     }
-    if (pilot) where.pilotName = pilot;
-    if (location) where.location = location;
-    const flights = await Flight.findAll({
-      where,
-      order: [['startTime', 'DESC']]
-    });
+    if (pilot) filter.pilotName = pilot;
+    if (location) filter.location = location;
+    const flights = await Flight.find(filter).sort({ startTime: -1 });
     res.json(flights);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -26,7 +22,14 @@ export const getFlights = async (req, res) => {
 export const addFlight = async (req, res) => {
   try {
     const { startTime, duration, pilotName, location } = req.body;
-    const flight = await Flight.create({ startTime, duration, pilotName, location });
+    const flight = new Flight({
+      startTime,
+      duration,
+      pilotName,
+      location,
+    });
+    // Mongoose: save the flight document
+    await flight.save();
     res.status(201).json(flight);
   } catch (err) {
     res.status(500).json({ message: err.message });
