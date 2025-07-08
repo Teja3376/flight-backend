@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+app.use('/api', authRoutes);
 app.use('/api/flights', flightRoutes);
 
 const PORT = process.env.PORT || 5000;
