@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/authRoutes.js';
-import flightRoutes from './routes/flightRoutes.js';
-import sequelize from './models/index.js';
+import authRoutes from './src/routes/authRoutes.js';
+import flightRoutes from './src/routes/flightRoutes.js';
+import sequelize from './src/models/index.js';
 
 dotenv.config();
 
