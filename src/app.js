@@ -22,3 +22,7 @@ sequelize.sync().then(() => {
 }).catch(err => {
   console.error('❌ MySQL connection error:', err);
 });
+
+export default function handler (req, res) {
+  app(req, res);
+}
