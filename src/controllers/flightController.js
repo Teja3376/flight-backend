@@ -6,8 +6,8 @@ export const getFlights = async (req, res) => {
     const filter = {};
     if (search) {
       filter.$or = [
-        { pilotName: { $reger: search, $options: "i" } },
-        { location: { $reger: search, $option: "i" } },
+        { pilotName: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
       ];
     }
     if (pilot) filter.pilotName = pilot;
