@@ -10,8 +10,13 @@ export const getFlights = async (req, res) => {
         { location: { $regex: search, $options: "i" } },
       ];
     }
-    if (pilot) filter.pilotName = pilot;
-    if (location) filter.location = location;
+    if (pilot) {
+      filter.pilotName = { $regex: pilot, $options: "i" };
+    }
+
+    if (location) {
+      filter.location = { $regex: location, $options: "i" };
+    }
     const flights = await Flight.find(filter).sort({ startTime: -1 });
     res.json(flights);
   } catch (err) {
